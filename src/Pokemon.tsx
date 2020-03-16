@@ -1,50 +1,36 @@
 import React from 'react';
 
-interface IProps {};
+interface IProps { };
 interface IState {
-    Pokemon: Array<{name:string,pid:number}>;
+    Users: Array<{}>;
 };
 
 class Pokemon extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {
-            Pokemon: [
-                {
-                    name: 'Pikachu',
-                    pid:1
-                },
-                {
-                    name: 'Charizard',
-                    pid:2
-                },
-                {
-                    name: 'Raichu',
-                    pid:4
-                },
-                {
-                    name: 'Squirtle',
-                    pid:5,
-                },
-                {
-                    name: 'Charminder',
-                    pid:6
-                }
-            ]
+            Users: []
         }
+    } 
+
+    public componentDidMount() {
+        fetch('https://jsonplaceholder.typicode.com/users')
+            .then((response) => response.json())
+            .then((users) => {
+                this.setState({ Users: users });
+            })
     }
 
     public render() {
         return (
             <div>
                 <h1 style={{ textAlign: 'center' }}>Pokemon Rollodex</h1>
-                    {this.state.Pokemon.map(Pokemon=>{
-                        return(<p style={{textAlign:'center'}} key={Pokemon.pid}>{Pokemon.name}</p>)
-                    })}
+                {this.state.Users.map((users: any) => {
+                    return (<p style={{ textAlign: 'center' }} key={users['id']}>{users['name']}</p>)
+                })}
             </div>
         )
     }
 }
-
 export default Pokemon;
 
